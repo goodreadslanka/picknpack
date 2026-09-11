@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Pricing &amp; packing</title>
+<title>Book lookup</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Packing">
+<meta name="apple-mobile-web-app-title" content="Lookup">
 <meta name="theme-color" content="#d9dee4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,24 +35,19 @@
 
   .wrap {
     max-width: 520px; margin: 0 auto;
-    padding: 0 14px calc(40px + env(safe-area-inset-bottom));
+    padding: 0 14px calc(24px + env(safe-area-inset-bottom));
   }
 
   .bar {
-    position: sticky; top: 0; z-index: 5;
     display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    padding: calc(12px + env(safe-area-inset-top)) 2px 12px;
-    background: var(--bench);
-    border-bottom: 1px solid var(--rule);
+    padding: calc(10px + env(safe-area-inset-top)) 2px 10px;
   }
-  .bar h1 { margin: 0; flex: 1; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
-  .count { font-size: 15px; font-weight: 600; color: var(--muted); }
-  .count b { color: var(--ink); font-size: 19px; }
+  .bar h1 { margin: 0; flex: 1; font-size: 16px; font-weight: 600; color: var(--muted); letter-spacing: -0.01em; }
   .gear { background: none; border: 0; padding: 4px 2px; font-size: 18px; color: var(--muted); cursor: pointer; }
 
-  .scan { display: flex; gap: 8px; margin: 14px 0; }
+  .scan { display: flex; gap: 8px; margin-bottom: 12px; }
   #code {
-    flex: 1; min-width: 0; height: 58px; padding: 0 16px;
+    flex: 1; min-width: 0; height: 56px; padding: 0 16px;
     font: 600 21px 'Archivo', sans-serif; font-variant-numeric: tabular-nums;
     letter-spacing: 0.02em; color: var(--ink);
     background: var(--card); border: 2px solid var(--ink); border-radius: 4px;
@@ -61,52 +56,48 @@
   #code:focus { outline: 3px solid var(--signal); outline-offset: 1px; }
 
   .camBtn {
-    width: 58px; height: 58px; flex: none;
+    width: 56px; height: 56px; flex: none;
     background: var(--card); color: var(--ink);
     border: 2px solid var(--ink); border-radius: 4px;
     font-size: 22px; cursor: pointer;
   }
   .camBtn[aria-pressed="true"] { background: var(--ink); color: var(--card); }
 
-  #reader { display: none; margin-bottom: 14px; border-radius: 4px; overflow: hidden; background: #000; }
+  #reader { display: none; margin-bottom: 12px; border-radius: 4px; overflow: hidden; background: #000; }
   #reader.on { display: block; }
   #reader video { display: block; width: 100%; }
 
   .msg {
-    display: none; margin-bottom: 14px; padding: 14px 16px;
+    display: none; margin-bottom: 12px; padding: 13px 16px;
     border-left: 5px solid var(--stop); background: var(--card);
     font-size: 16px; line-height: 1.4;
   }
   .msg.on { display: block; }
   .msg.good { border-left-color: var(--go); }
 
+  /* ---- the one card ---- */
   .ticket { display: none; background: var(--card); border-radius: 4px; overflow: hidden; }
-  .ticket.on { display: block; animation: lift .18s ease-out; }
+  .ticket.on { display: block; animation: lift .16s ease-out; }
   @keyframes lift { from { transform: translateY(6px); opacity: 0 } to { transform: none; opacity: 1 } }
   @media (prefers-reduced-motion: reduce) { .ticket.on { animation: none } }
 
   .isbn { padding: 9px 18px; background: var(--ink); color: #fff; font-size: 15px; font-weight: 500; letter-spacing: 0.09em; }
-  .title { margin: 0; padding: 16px 18px 14px; font-size: 25px; font-weight: 700; line-height: 1.18; letter-spacing: -0.015em; }
 
-  .row { display: flex; align-items: baseline; gap: 14px; padding: 12px 18px; border-top: 1px solid var(--rule); }
-  .row .k { flex: none; width: 88px; font-size: 14px; color: var(--muted); }
-  .row .v { font-size: 26px; font-weight: 600; line-height: 1.1; word-break: break-word; }
+  .title {
+    margin: 0; padding: 15px 18px 14px;
+    font-size: 25px; font-weight: 700; line-height: 1.16; letter-spacing: -0.015em;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
 
   .split { display: flex; border-top: 1px solid var(--rule); }
-  .split .row { flex: 1; border-top: 0; }
-  .split .row + .row { border-left: 1px solid var(--rule); }
-  .split .k { width: auto; }
-  .split .v { font-size: 30px; }
+  .cell { flex: 1; padding: 12px 18px; }
+  .cell + .cell { border-left: 1px solid var(--rule); }
+  .cell .k { font-size: 14px; color: var(--muted); }
+  .cell .v { margin-top: 2px; font-size: 32px; font-weight: 600; line-height: 1.1; word-break: break-word; }
 
   .price { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 16px 18px; background: var(--signal); }
   .price .k { font-size: 15px; font-weight: 500; }
-  .price .v { font-size: 34px; font-weight: 700; letter-spacing: -0.02em; }
-
-  .done { display: block; width: 100%; height: 72px; background: var(--go); color: #fff; border: 0;
-          font: 600 22px 'Archivo', sans-serif; cursor: pointer; }
-  .done:active { background: #0c6440; }
-  .done:disabled { background: #8c96a1; }
-  .stamp { padding: 16px 18px; background: #eaf3ee; color: var(--go); font-size: 18px; font-weight: 600; }
+  .price .v { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; }
 
   .choices { display: none; }
   .choices.on { display: block; }
@@ -117,16 +108,8 @@
   }
   .choice span { display: block; margin-top: 3px; font-size: 14px; color: var(--muted); }
 
-  .history { display: none; margin-top: 22px; border-top: 1px solid var(--rule); padding-top: 12px; }
-  .history.on { display: block; }
-  .history h2 { margin: 0 0 8px; font-size: 14px; font-weight: 500; color: var(--muted); }
-  .history ul { list-style: none; margin: 0; padding: 0; }
-  .history li { display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; font-size: 15px; }
-  .history .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .history button { background: none; border: 0; color: var(--stop); font: 500 15px 'Archivo', sans-serif; cursor: pointer; padding: 0; }
-
-  /* setup */
-  .setup { display: none; padding: 20px 0; }
+  /* ---- setup ---- */
+  .setup { display: none; padding: 14px 0; }
   .setup.on { display: block; }
   .setup p { margin: 0 0 18px; font-size: 16px; line-height: 1.5; color: var(--muted); max-width: 60ch; }
   .setup label { display: block; margin-bottom: 6px; font-size: 14px; color: var(--muted); }
@@ -136,7 +119,7 @@
     background: var(--card); border: 2px solid var(--rule); border-radius: 4px;
   }
   .setup input:focus { outline: none; border-color: var(--ink); }
-  .setup .save { width: 100%; height: 58px; background: var(--ink); color: #fff; border: 0;
+  .setup .save { width: 100%; height: 56px; background: var(--ink); color: #fff; border: 0;
                  border-radius: 4px; font: 600 18px 'Archivo', sans-serif; cursor: pointer; }
   .setup .back { display: block; margin: 14px auto 0; background: none; border: 0; color: var(--muted);
                  font: 500 15px 'Archivo', sans-serif; cursor: pointer; }
@@ -148,12 +131,10 @@
 <div class="wrap">
 
   <div class="bar">
-    <h1>Pricing &amp; packing</h1>
-    <div class="count"><b id="left">–</b> left</div>
+    <h1>Book lookup</h1>
     <button class="gear" id="gear" type="button" title="Settings">&#9881;</button>
   </div>
 
-  <!-- first-run setup -->
   <div class="setup" id="setup">
     <p>Paste the web app link from Apps Script and the access key you set in the script. They stay on this device only.</p>
     <label for="sUrl">Web app link</label>
@@ -165,7 +146,6 @@
     <button class="back" id="back" type="button">Cancel</button>
   </div>
 
-  <!-- station -->
   <div id="station">
     <form class="scan" id="form" autocomplete="off">
       <input id="code" inputmode="numeric" placeholder="Scan or type ISBN" aria-label="ISBN">
@@ -179,19 +159,11 @@
     <div class="ticket" id="ticket">
       <div class="isbn" id="tIsbn"></div>
       <h2 class="title" id="tTitle"></h2>
-      <div class="row"><div class="k">Pick from</div><div class="v" id="tPick"></div></div>
       <div class="split">
-        <div class="row"><div class="k">Qty</div><div class="v" id="tQty"></div></div>
-        <div class="row"><div class="k">Into box</div><div class="v" id="tBox"></div></div>
+        <div class="cell"><div class="k">Qty</div><div class="v" id="tQty"></div></div>
+        <div class="cell"><div class="k">Into box</div><div class="v" id="tBox"></div></div>
       </div>
       <div class="price"><div class="k">Price</div><div class="v" id="tPrice"></div></div>
-      <button class="done" id="doneBtn" type="button">Done</button>
-      <div class="stamp" id="stamp" style="display:none"></div>
-    </div>
-
-    <div class="history" id="history">
-      <h2>Just packed</h2>
-      <ul id="histList"></ul>
     </div>
   </div>
 
@@ -204,7 +176,6 @@ var $ = function (id) { return document.getElementById(id); };
 /* ---------------- settings ---------------- */
 
 var cfg = { url: '', token: '' };
-
 try {
   cfg.url = localStorage.getItem('pp_url') || '';
   cfg.token = localStorage.getItem('pp_token') || '';
@@ -216,6 +187,7 @@ function openSetup() {
   $('setup').classList.add('on');
   $('station').style.display = 'none';
   $('back').style.display = cfg.url ? 'block' : 'none';
+  stopCam();
 }
 function closeSetup() {
   $('setup').classList.remove('on');
@@ -233,7 +205,10 @@ $('save').onclick = function () {
   cfg.url = u; cfg.token = t;
   try { localStorage.setItem('pp_url', u); localStorage.setItem('pp_token', t); } catch (e) {}
   closeSetup();
-  refreshStats();
+  call({ action: 'ping' }, function (res) {
+    if (!res.ok) say(res.message, false);
+    else say('Connected. Scan a book.', true);
+  });
 };
 
 /* ---------------- transport (JSONP, no CORS needed) ---------------- */
@@ -272,7 +247,6 @@ function call(params, cb) {
 
 /* ---------------- lookup ---------------- */
 
-var current = null, history = [];
 var keyboardScanner = window.matchMedia('(pointer: fine)').matches;
 
 $('form').addEventListener('submit', function (e) { e.preventDefault(); submit($('code').value); });
@@ -281,12 +255,13 @@ function submit(raw) {
   var code = String(raw || '').trim();
   if (!code) return;
   $('code').value = '';
-  hideAll();
+  clearScreen();            // wipe the previous book before the new one arrives
   setBusy(true);
   call({ action: 'lookup', code: code }, function (res) {
     setBusy(false);
     if (!res.ok) { beep(false); return say(res.message, false); }
     if (res.matches.length === 1) return show(res.matches[0]);
+
     beep(true);
     var box = $('choices');
     box.innerHTML = '';
@@ -295,83 +270,32 @@ function submit(raw) {
       b.className = 'choice';
       b.innerHTML = esc(item.title || '(no title)') +
         '<span>Row ' + item.row + ' &middot; box ' + esc(item.intoBox || '–') +
-        ' &middot; qty ' + esc(item.qty || '–') + (item.done ? ' &middot; already done' : '') + '</span>';
+        ' &middot; qty ' + esc(item.qty || '–') + '</span>';
       b.onclick = function () { show(item); };
       box.appendChild(b);
     });
     box.classList.add('on');
-    say(res.matches.length + ' rows share this ISBN. Pick the line you are packing.', true);
+    say(res.matches.length + ' rows share this ISBN. Pick one.', true);
   });
 }
 
 function show(item) {
-  current = item;
-  hideAll();
+  clearScreen();
   $('tIsbn').textContent = item.isbn;
   $('tTitle').textContent = item.title || '(no title in sheet)';
-  $('tPick').textContent = item.pickFrom || '–';
   $('tQty').textContent = item.qty || '–';
   $('tBox').textContent = item.intoBox || '–';
   $('tPrice').textContent = item.price || '–';
   $('ticket').classList.add('on');
-  setDoneState(item.done, 'Already marked done in the sheet');
   beep(true);
   refocus();
 }
 
-function setDoneState(isDone, text) {
-  $('doneBtn').style.display = isDone ? 'none' : 'block';
-  $('stamp').style.display = isDone ? 'block' : 'none';
-  if (isDone) $('stamp').textContent = text;
-}
-
-/* ---------------- done ---------------- */
-
-$('doneBtn').addEventListener('click', function () {
-  if (!current) return;
-  var item = current;
-  $('doneBtn').disabled = true;
-  $('doneBtn').textContent = 'Saving…';
-  call({ action: 'done', row: item.row, isbn: item.isbn }, function (res) {
-    $('doneBtn').disabled = false;
-    $('doneBtn').textContent = 'Done';
-    if (!res.ok) { beep(false); return say(res.message, false); }
-    setDoneState(true, res.alreadyDone ? 'Already marked done in the sheet' : 'Marked done');
-    if (res.stats) $('left').textContent = res.stats.remaining;
-    if (!res.alreadyDone) pushHistory(item);
-    beep(true);
-    refocus();
-  });
-});
-
-function pushHistory(item) {
-  history = [item].concat(history.filter(function (x) { return x.row !== item.row; })).slice(0, 5);
-  drawHistory();
-}
-
-function drawHistory() {
-  var ul = $('histList');
-  ul.innerHTML = '';
-  history.forEach(function (h) {
-    var li = document.createElement('li');
-    var t = document.createElement('div');
-    t.className = 't';
-    t.textContent = h.title || h.isbn;
-    var u = document.createElement('button');
-    u.textContent = 'Undo';
-    u.onclick = function () {
-      call({ action: 'undo', row: h.row }, function (res) {
-        if (!res.ok) { beep(false); return say(res.message, false); }
-        if (res.stats) $('left').textContent = res.stats.remaining;
-        history = history.filter(function (x) { return x.row !== h.row; });
-        drawHistory();
-        say('Row ' + h.row + ' is open again.', true);
-      });
-    };
-    li.appendChild(t); li.appendChild(u);
-    ul.appendChild(li);
-  });
-  $('history').classList.toggle('on', history.length > 0);
+function clearScreen() {
+  $('msg').className = 'msg';
+  $('ticket').classList.remove('on');
+  $('choices').classList.remove('on');
+  $('choices').innerHTML = '';
 }
 
 /* ---------------- camera ---------------- */
@@ -431,12 +355,6 @@ function say(text, good) {
   m.className = 'msg on' + (good ? ' good' : '');
   refocus();
 }
-function hideAll() {
-  $('msg').className = 'msg';
-  $('ticket').classList.remove('on');
-  $('choices').classList.remove('on');
-  current = null;
-}
 function setBusy(on) { document.body.className = on ? 'busy' : ''; }
 function refocus() { if (keyboardScanner) $('code').focus(); }
 function esc(s) {
@@ -459,15 +377,7 @@ function beep(good) {
   } catch (e) {}
 }
 
-function refreshStats() {
-  call({ action: 'stats' }, function (res) {
-    if (res.ok && res.stats) $('left').textContent = res.stats.remaining;
-    else if (!res.ok) say(res.message, false);
-  });
-}
-
 if (!cfg.url || !cfg.token) openSetup();
-else refreshStats();
 refocus();
 </script>
 </body>
