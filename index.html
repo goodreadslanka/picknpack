@@ -39,33 +39,41 @@
   }
 
   .bar {
-    display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    padding: calc(10px + env(safe-area-inset-top)) 2px 10px;
+    display: flex; align-items: center; gap: 10px;
+    padding: calc(8px + env(safe-area-inset-top)) 2px 8px;
   }
-  .bar h1 { margin: 0; flex: 1; font-size: 16px; font-weight: 600; color: var(--muted); letter-spacing: -0.01em; }
+  .bar h1 { margin: 0; flex: 1; font-size: 15px; font-weight: 600; color: var(--muted); letter-spacing: -0.01em; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--stop); flex: none; }
+  .dot.live { background: var(--go); }
   .gear { background: none; border: 0; padding: 4px 2px; font-size: 18px; color: var(--muted); cursor: pointer; }
 
-  .scan { display: flex; gap: 8px; margin-bottom: 12px; }
+  /* ---- always-on camera ---- */
+  .camWrap { position: relative; height: 168px; margin-bottom: 12px; border-radius: 4px; overflow: hidden; background: #0b1016; }
+  #reader { width: 100%; height: 100%; }
+  #reader video { width: 100% !important; height: 168px !important; object-fit: cover; display: block; }
+  #reader img { display: none; }
+
+  .camOff {
+    position: absolute; inset: 0; display: none;
+    flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    padding: 16px; text-align: center; background: #0b1016; color: #cfd6de;
+  }
+  .camOff.on { display: flex; }
+  .camOff p { margin: 0; font-size: 14px; line-height: 1.45; max-width: 36ch; }
+  .camOff button {
+    background: var(--signal); color: var(--ink); border: 0; border-radius: 4px;
+    padding: 12px 22px; font: 600 16px 'Archivo', sans-serif; cursor: pointer;
+  }
+
+  .manual { display: flex; gap: 8px; margin-bottom: 12px; }
   #code {
-    flex: 1; min-width: 0; height: 56px; padding: 0 16px;
-    font: 600 21px 'Archivo', sans-serif; font-variant-numeric: tabular-nums;
-    letter-spacing: 0.02em; color: var(--ink);
-    background: var(--card); border: 2px solid var(--ink); border-radius: 4px;
+    flex: 1; min-width: 0; height: 46px; padding: 0 14px;
+    font: 500 17px 'Archivo', sans-serif; font-variant-numeric: tabular-nums;
+    color: var(--ink); background: var(--card);
+    border: 1px solid var(--rule); border-radius: 4px;
   }
-  #code::placeholder { color: #9aa6b3; font-weight: 400; letter-spacing: 0; }
-  #code:focus { outline: 3px solid var(--signal); outline-offset: 1px; }
-
-  .camBtn {
-    width: 56px; height: 56px; flex: none;
-    background: var(--card); color: var(--ink);
-    border: 2px solid var(--ink); border-radius: 4px;
-    font-size: 22px; cursor: pointer;
-  }
-  .camBtn[aria-pressed="true"] { background: var(--ink); color: var(--card); }
-
-  #reader { display: none; margin-bottom: 12px; border-radius: 4px; overflow: hidden; background: #000; }
-  #reader.on { display: block; }
-  #reader video { display: block; width: 100%; }
+  #code::placeholder { color: #9aa6b3; font-weight: 400; }
+  #code:focus { outline: none; border-color: var(--ink); }
 
   .msg {
     display: none; margin-bottom: 12px; padding: 13px 16px;
@@ -75,38 +83,32 @@
   .msg.on { display: block; }
   .msg.good { border-left-color: var(--go); }
 
-  /* ---- the one card ---- */
-  .ticket { display: none; background: var(--card); border-radius: 4px; overflow: hidden; }
-  .ticket.on { display: block; animation: lift .16s ease-out; }
-  @keyframes lift { from { transform: translateY(6px); opacity: 0 } to { transform: none; opacity: 1 } }
-  @media (prefers-reduced-motion: reduce) { .ticket.on { animation: none } }
+  .note { margin: 0 0 8px; font-size: 14px; color: var(--muted); }
+  .note:empty { display: none; }
 
-  .isbn { padding: 9px 18px; background: var(--ink); color: #fff; font-size: 15px; font-weight: 500; letter-spacing: 0.09em; }
+  /* ---- result cards ---- */
+  #results > .ticket { margin-bottom: 10px; }
+  .ticket { background: var(--card); border-radius: 4px; overflow: hidden; animation: lift .16s ease-out; }
+  @keyframes lift { from { transform: translateY(6px); opacity: 0 } to { transform: none; opacity: 1 } }
+  @media (prefers-reduced-motion: reduce) { .ticket { animation: none } }
+
+  .isbn { padding: 8px 18px; background: var(--ink); color: #fff; font-size: 14px; font-weight: 500; letter-spacing: 0.09em; }
 
   .title {
-    margin: 0; padding: 15px 18px 14px;
-    font-size: 25px; font-weight: 700; line-height: 1.16; letter-spacing: -0.015em;
+    margin: 0; padding: 14px 18px 13px;
+    font-size: 24px; font-weight: 700; line-height: 1.16; letter-spacing: -0.015em;
     display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
   }
 
   .split { display: flex; border-top: 1px solid var(--rule); }
-  .cell { flex: 1; padding: 12px 18px; }
+  .cell { flex: 1; padding: 11px 18px; }
   .cell + .cell { border-left: 1px solid var(--rule); }
-  .cell .k { font-size: 14px; color: var(--muted); }
-  .cell .v { margin-top: 2px; font-size: 32px; font-weight: 600; line-height: 1.1; word-break: break-word; }
+  .cell .k { font-size: 13px; color: var(--muted); }
+  .cell .v { margin-top: 2px; font-size: 30px; font-weight: 600; line-height: 1.1; word-break: break-word; }
 
-  .price { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 16px 18px; background: var(--signal); }
+  .price { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 15px 18px; background: var(--signal); }
   .price .k { font-size: 15px; font-weight: 500; }
-  .price .v { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; }
-
-  .choices { display: none; }
-  .choices.on { display: block; }
-  .choice {
-    display: block; width: 100%; text-align: left; margin-bottom: 8px; padding: 14px 16px;
-    background: var(--card); border: 1px solid var(--rule); border-left: 5px solid var(--signal);
-    border-radius: 4px; cursor: pointer; font: 500 17px 'Archivo', sans-serif; color: var(--ink);
-  }
-  .choice span { display: block; margin-top: 3px; font-size: 14px; color: var(--muted); }
+  .price .v { font-size: 35px; font-weight: 700; letter-spacing: -0.02em; }
 
   /* ---- setup ---- */
   .setup { display: none; padding: 14px 0; }
@@ -123,15 +125,14 @@
                  border-radius: 4px; font: 600 18px 'Archivo', sans-serif; cursor: pointer; }
   .setup .back { display: block; margin: 14px auto 0; background: none; border: 0; color: var(--muted);
                  font: 500 15px 'Archivo', sans-serif; cursor: pointer; }
-
-  .busy { opacity: .45; pointer-events: none; }
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <div class="bar">
-    <h1>Book lookup</h1>
+    <div class="dot" id="dot"></div>
+    <h1 id="status">Starting camera…</h1>
     <button class="gear" id="gear" type="button" title="Settings">&#9881;</button>
   </div>
 
@@ -147,24 +148,21 @@
   </div>
 
   <div id="station">
-    <form class="scan" id="form" autocomplete="off">
-      <input id="code" inputmode="numeric" placeholder="Scan or type ISBN" aria-label="ISBN">
-      <button class="camBtn" id="cam" type="button" aria-pressed="false" title="Scan with camera">&#9635;</button>
+    <div class="camWrap">
+      <div id="reader"></div>
+      <div class="camOff" id="camOff">
+        <p id="camOffText">Tap to switch on the camera.</p>
+        <button id="camStart" type="button">Start camera</button>
+      </div>
+    </div>
+
+    <form class="manual" id="form" autocomplete="off">
+      <input id="code" inputmode="numeric" placeholder="…or type the ISBN" aria-label="ISBN">
     </form>
 
-    <div id="reader"></div>
     <div class="msg" id="msg" role="status"></div>
-    <div class="choices" id="choices"></div>
-
-    <div class="ticket" id="ticket">
-      <div class="isbn" id="tIsbn"></div>
-      <h2 class="title" id="tTitle"></h2>
-      <div class="split">
-        <div class="cell"><div class="k">Qty</div><div class="v" id="tQty"></div></div>
-        <div class="cell"><div class="k">Into box</div><div class="v" id="tBox"></div></div>
-      </div>
-      <div class="price"><div class="k">Price</div><div class="v" id="tPrice"></div></div>
-    </div>
+    <p class="note" id="note"></p>
+    <div id="results"></div>
   </div>
 
 </div>
@@ -192,6 +190,7 @@ function openSetup() {
 function closeSetup() {
   $('setup').classList.remove('on');
   $('station').style.display = 'block';
+  startCam();
 }
 
 $('gear').onclick = openSetup;
@@ -205,10 +204,7 @@ $('save').onclick = function () {
   cfg.url = u; cfg.token = t;
   try { localStorage.setItem('pp_url', u); localStorage.setItem('pp_token', t); } catch (e) {}
   closeSetup();
-  call({ action: 'ping' }, function (res) {
-    if (!res.ok) say(res.message, false);
-    else say('Connected. Scan a book.', true);
-  });
+  call({ action: 'ping' }, function (res) { if (!res.ok) say(res.message, false); });
 };
 
 /* ---------------- transport (JSONP, no CORS needed) ---------------- */
@@ -247,65 +243,89 @@ function call(params, cb) {
 
 /* ---------------- lookup ---------------- */
 
+var busy = false, lastCode = '', lastAt = 0;
 var keyboardScanner = window.matchMedia('(pointer: fine)').matches;
 
-$('form').addEventListener('submit', function (e) { e.preventDefault(); submit($('code').value); });
-
-function submit(raw) {
-  var code = String(raw || '').trim();
-  if (!code) return;
+$('form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var v = $('code').value.trim();
   $('code').value = '';
-  clearScreen();            // wipe the previous book before the new one arrives
-  setBusy(true);
-  call({ action: 'lookup', code: code }, function (res) {
-    setBusy(false);
-    if (!res.ok) { beep(false); return say(res.message, false); }
-    if (res.matches.length === 1) return show(res.matches[0]);
+  lastCode = '';                 // typing the same ISBN again should still work
+  submit(v);
+});
 
+/** Called by the camera on every read, so it must shrug off repeats. */
+function onScan(text) {
+  var code = String(text || '').trim();
+  var now = Date.now();
+  if (busy) return;
+  if (code === lastCode && now - lastAt < 3000) return;   // same book still under the lens
+  lastCode = code;
+  lastAt = now;
+  submit(code);
+}
+
+function submit(code) {
+  if (!code) return;
+  clearScreen();                 // previous book disappears before the new one arrives
+  busy = true;
+  setStatus('Looking up ' + code + '…', true);
+  call({ action: 'lookup', code: code }, function (res) {
+    busy = false;
+    lastAt = Date.now();
+    if (!res.ok) {
+      beep(false);
+      setStatus('Ready to scan', true);
+      return say(res.message, false);
+    }
     beep(true);
-    var box = $('choices');
-    box.innerHTML = '';
-    res.matches.forEach(function (item) {
-      var b = document.createElement('button');
-      b.className = 'choice';
-      b.innerHTML = esc(item.title || '(no title)') +
-        '<span>Row ' + item.row + ' &middot; box ' + esc(item.intoBox || '–') +
-        ' &middot; qty ' + esc(item.qty || '–') + '</span>';
-      b.onclick = function () { show(item); };
-      box.appendChild(b);
-    });
-    box.classList.add('on');
-    say(res.matches.length + ' rows share this ISBN. Pick one.', true);
+    render(res.matches);
+    setStatus('Ready to scan', true);
   });
 }
 
-function show(item) {
-  clearScreen();
-  $('tIsbn').textContent = item.isbn;
-  $('tTitle').textContent = item.title || '(no title in sheet)';
-  $('tQty').textContent = item.qty || '–';
-  $('tBox').textContent = item.intoBox || '–';
-  $('tPrice').textContent = item.price || '–';
-  $('ticket').classList.add('on');
-  beep(true);
-  refocus();
+function render(items) {
+  var box = $('results');
+  box.innerHTML = '';
+  items.forEach(function (item) { box.appendChild(cardFor(item)); });
+  $('note').textContent = items.length > 1
+    ? items.length + ' rows in the sheet share this ISBN.'
+    : '';
+}
+
+function cardFor(item) {
+  var d = document.createElement('div');
+  d.className = 'ticket';
+  d.innerHTML =
+    '<div class="isbn">' + esc(item.isbn) + '</div>' +
+    '<h2 class="title">' + esc(item.title || '(no title in sheet)') + '</h2>' +
+    '<div class="split">' +
+      '<div class="cell"><div class="k">Qty</div><div class="v">' + esc(item.qty || '–') + '</div></div>' +
+      '<div class="cell"><div class="k">Into box</div><div class="v">' + esc(item.intoBox || '–') + '</div></div>' +
+    '</div>' +
+    '<div class="price"><div class="k">Price</div><div class="v">' + esc(item.price || '–') + '</div></div>';
+  return d;
 }
 
 function clearScreen() {
   $('msg').className = 'msg';
-  $('ticket').classList.remove('on');
-  $('choices').classList.remove('on');
-  $('choices').innerHTML = '';
+  $('note').textContent = '';
+  $('results').innerHTML = '';
 }
 
-/* ---------------- camera ---------------- */
+/* ---------------- camera: on at all times ---------------- */
 
-var reader = null, camOn = false;
+var reader = null, camOn = false, starting = false;
 
-$('cam').addEventListener('click', function () { camOn ? stopCam() : startCam(); });
+$('camStart').onclick = function () { startCam(true); };
 
-function startCam() {
-  if (!window.Html5Qrcode) return say('Scanner library did not load. Check your connection and reload.', false);
+function startCam(fromTap) {
+  if (camOn || starting) return;
+  if (!window.Html5Qrcode) {
+    return showCamOff('Scanner library did not load. Check the connection and reload the page.');
+  }
+  starting = true;
+
   var fmts = window.Html5QrcodeSupportedFormats ? [
     Html5QrcodeSupportedFormats.EAN_13,
     Html5QrcodeSupportedFormats.EAN_8,
@@ -315,48 +335,62 @@ function startCam() {
   ] : undefined;
 
   reader = reader || new Html5Qrcode('reader', { verbose: false });
-  $('reader').classList.add('on');
 
   reader.start(
     { facingMode: 'environment' },
-    { fps: 12, qrbox: { width: 280, height: 150 }, aspectRatio: 1.4, formatsToSupport: fmts },
-    function (text) { stopCam(); submit(text); },
+    { fps: 12, qrbox: { width: 270, height: 110 }, aspectRatio: 1.6, formatsToSupport: fmts },
+    function (text) { onScan(text); },
     function () {}
   ).then(function () {
+    starting = false;
     camOn = true;
-    $('cam').setAttribute('aria-pressed', 'true');
+    $('camOff').classList.remove('on');
+    setStatus('Ready to scan', true);
   }).catch(function (err) {
-    $('reader').classList.remove('on');
+    starting = false;
     var e = String(err);
     if (e.indexOf('NotAllowed') > -1 || e.indexOf('Permission') > -1) {
-      say('Camera permission was refused. Tap aA in the address bar, then Website Settings, and allow the camera.', false);
+      showCamOff(fromTap
+        ? 'Camera blocked for this site. Tap aA in the address bar, then Website Settings, and allow the camera.'
+        : 'Tap to switch on the camera.');
     } else if (e.indexOf('NotFound') > -1) {
-      say('No camera found on this device.', false);
+      showCamOff('No camera found on this device.');
     } else {
-      say('Camera could not start: ' + e, false);
+      showCamOff('Camera could not start. ' + e);
     }
   });
 }
 
+function showCamOff(text) {
+  camOn = false;
+  $('camOffText').textContent = text;
+  $('camOff').classList.add('on');
+  setStatus('Camera off', false);
+}
+
 function stopCam() {
   if (!reader || !camOn) return;
-  reader.stop().then(function () {
-    camOn = false;
-    $('reader').classList.remove('on');
-    $('cam').setAttribute('aria-pressed', 'false');
-  }).catch(function () {});
+  camOn = false;
+  reader.stop().catch(function () {});
 }
+
+/* Keep it running: iOS suspends the stream when the app goes to the background. */
+document.addEventListener('visibilitychange', function () {
+  if (document.hidden) stopCam();
+  else if (!$('setup').classList.contains('on')) setTimeout(startCam, 300);
+});
 
 /* ---------------- plumbing ---------------- */
 
+function setStatus(text, live) {
+  $('status').textContent = text;
+  $('dot').className = 'dot' + (live ? ' live' : '');
+}
 function say(text, good) {
   var m = $('msg');
   m.textContent = text;
   m.className = 'msg on' + (good ? ' good' : '');
-  refocus();
 }
-function setBusy(on) { document.body.className = on ? 'busy' : ''; }
-function refocus() { if (keyboardScanner) $('code').focus(); }
 function esc(s) {
   return String(s).replace(/[&<>"]/g, function (c) {
     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
@@ -378,7 +412,8 @@ function beep(good) {
 }
 
 if (!cfg.url || !cfg.token) openSetup();
-refocus();
+else startCam();
+if (keyboardScanner) $('code').focus();
 </script>
 </body>
 </html>
